@@ -1,4 +1,4 @@
-import pyautogui, win32gui, pyhooked, time, threading, datetime, sys, random
+import pyautogui, win32gui, pyhooked, time, threading, datetime, sys, random, win32api
 
 #
 # cursorpos = win32gui.GetCursorPos()
@@ -30,11 +30,16 @@ def handle_event(args):
 
     if isinstance(args, pyhooked.MouseEvent):
         if args.event_type == "key down":
-            print("("+ str(args.mouse_x) + ", " + str(args.mouse_y) + ")" + "  " + str(time))
+            try:
+                print(time)
+                print("("+ str(args.mouse_x) + ", " + str(args.mouse_y) + ")" + "  " + str(time-activity_tracker[-1][1]))
+            except IndexError as e:
+                print("(" + str(args.mouse_x) + ", " + str(args.mouse_y) + ")" + "  " + str(time))
+
             if len(activity_tracker)==0:
                 activity_tracker.append([(args.mouse_x, args.mouse_y), time])
             else:
-                activity_tracker.append([(args.mouse_x, args.mouse_y), time-activity_tracker[-1][1]])
+                activity_tracker.append([(args.mouse_x, args.mouse_y), time])
 
 
 def wait():
@@ -63,16 +68,24 @@ def rand_mouse_coord(coordinate):
     return (x,y)
 
 def rand_time(time):
-    mult = random.randint(0,100)
-    return time * ( 1 + mult/100)
+    if time < 10:
+        mult = random.randint(0,100)
+    else:
+        mult = random.randint(0,30)
+    return time * ( 1 + mult/50)
 
 while True:
     new_activity_list = []
-    for act in activity_tracker:
-        new_activity_list.append([rand_mouse_coord(act[0]), rand_time(act[1])])
+    for i in range(len(activity_tracker)):
+        if i != 0:
+            new_activity_list.append([rand_mouse_coord(activity_tracker[i][0]), rand_time(activity_tracker[i][1] - activity_tracker[i-1][1])])
+        else:
+            new_activity_list.append(
+                [rand_mouse_coord(activity_tracker[i][0]), 0])
+    print(new_activity_list)
     for activity in new_activity_list:
-        move_duration = random.randint(1,8) / 10
+        move_duration = random.randint(1, 4) / 10
         time.sleep(activity[1])
-        pyautogui.moveTo(activity[0][0],activity[0][1],move_duration)
+        win32api.SetCursorPos((activity[0][0], activity[0][1]))
         pyautogui.click(None,None)
-    time.sleep(random.randint(1,120))
+    time.sleep(random.randint(1, 120))

@@ -1,0 +1,4 @@
+pyautogui
+win32gui
+pyhooked
+win32api

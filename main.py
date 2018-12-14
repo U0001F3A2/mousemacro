@@ -29,13 +29,15 @@ def handle_event(args):
 
 
     if isinstance(args, pyhooked.MouseEvent):
+        print(args.event_type)
         if args.event_type == "key down":
             x, y = pyautogui.position()
             try:
                 print(time)
-                print("("+ str(x) + ", " + str(y) + ")" + "  " + str(time-activity_tracker[-1][1]))
+                print("("+ str(x) + ", " + str(y) + ")" + " at " + str(time-activity_tracker[-1][1]))
             except IndexError as e:
-                print("(" + str(x) + ", " + str(y) + ")" + "  " + str(time))
+                print("why error?")
+                print("(" + str(x) + ", " + str(y) + ")" + " at " + str(time))
 
             if len(activity_tracker)==0:
                 activity_tracker.append([(x, y), time])
@@ -64,8 +66,8 @@ print(activity_tracker)
 def rand_mouse_coord(coordinate):
     x_original = coordinate[0]
     y_original = coordinate[1]
-    x = random.randint(x_original - 10, x_original + 10)
-    y = random.randint(y_original - 10, y_original + 10)
+    x = random.randint(x_original - 5, x_original + 5)
+    y = random.randint(y_original - 5, y_original + 5)
     return (x,y)
 
 def rand_time(time):

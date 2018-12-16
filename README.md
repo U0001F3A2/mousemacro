@@ -1,2 +1,2 @@
 # mousemacro
-mouse recording &amp; randomly different replaying
+screen capture mouse scripting

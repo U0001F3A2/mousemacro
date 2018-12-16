@@ -19,6 +19,7 @@ class Macro(object):
         laclick("pics/decide.png")
         # laclick("pics/mission_start.png")
         rand_click(cc_x + 300, cc_y + 200)
+        # turn 1
         while not pyautogui.locateOnScreen("pics/plan_white.png"):
             Macro.random_sleep()
             continue
@@ -52,7 +53,8 @@ class Macro(object):
         laclick("pics/turn_end.png")
         Macro.wait_turn()
 
-        #update helipad location
+        # turn 2
+        # update helipad location
         h_x, h_y = Macro.cont_find(["pics/saintelmore_heliport_neutral2.png",
                                     "pics/saintelmore_heliport_neutral3.png"])
 
@@ -71,7 +73,8 @@ class Macro(object):
         # fourth move pod
         cc4_x, cc4_y = h_x - 210, h_y - 315
 
-        laclick("pics/plan_white.png")
+        while pyautogui.locateOnScreen("pics/plan_white.png"):
+            laclick("pics/plan_white.png")
         rand_click(cc_x, cc_y)
         rand_click(cc2_x, cc2_y)
         rand_click(cc3_x, cc3_y)
@@ -93,7 +96,8 @@ class Macro(object):
 
         m2_x, m2_y = ep_x - 150, ep_y - 70
 
-        laclick("pics/plan_white.png")
+        while pyautogui.locateOnScreen("pics/plan_white.png"):
+            laclick("pics/plan_white.png")
         rand_click(m_x, m_y)
         rand_click(m1_x, m1_y)
         rand_click(ep_x, ep_y)
@@ -204,4 +208,5 @@ class Macro(object):
 if __name__ == "__main__":
     time.sleep(1)
     mac = Macro("")
-    mac.start_macro()
+    while True:
+        mac.start_macro()
